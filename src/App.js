@@ -1,32 +1,29 @@
-import { useState, useEffect } from "react";
-
-function Hello() {
-  // clean up function 원리
-  // const cleanupFn = () => {
-  //   console.log("destroyed :(");
-  // }
-  // const effectFn = () => {
-  //   console.log("created :)");
-  //   return cleanupFn; // useEffect function 의 return 값으로 보내는 function은 clean up 시 실행된다.
-  // }
-  // useEffect(effectFn, []);
-
-  // 실제로 쓸 때는 아래와 같이 많이 씀
-  useEffect(() => {
-    console.log("hi :)");
-    return () => console.log("bye :("); // return clean up function 
-  }, []);
-
-  return <h1>Hello</h1>
-}  
+import { useState } from "react";
 
 function App() {
-  const [showing, setShowing] = useState(false);
-  const onClick = () => setShowing((prev) => !prev);
+  const [toDo, setToDo] = useState("");
+  const [toDos, setToDos] = useState([]);
+  const onChange = (event) => setToDo(event.target.value);
+  const onSubmit = (event) => {
+    event.preventDefault(); // 해당 이벤트를 처리하는 동안에는 이벤트 수신+동작 X
+    if (toDo === "") {
+      return;
+    }
+    setToDos(currentArray => [toDo, ...currentArray]); // currentArray를 받아와서 toDo 추가
+    setToDo("");  // state를 직접적으로 수정하지는 않는다. 함수를 통해 초기화
+  };
+  console.log(toDos);
   return (
     <div>
-      { showing ? <Hello /> : null}
-      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
+      <h1>My To Dos ({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input  
+          value={toDo} 
+          onChange={onChange} 
+          type="text" 
+          placeholder="write your to do..." />
+        <button>Add To Do</button>
+      </form>
     </div>
   );
 }
