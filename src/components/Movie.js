@@ -1,9 +1,13 @@
 import propTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 function Movie({medium_cover_image, title, summary, genres, rating}) {
   return (
     <div>
-      <h2>{title} ({rating})</h2>
+      <h2>
+        <Link to="/movie">{title}</Link>
+        ({rating})
+      </h2>
       <img src={medium_cover_image} alt={title} />
       <ul>
           {genres.map((g) => (
